@@ -11,11 +11,9 @@ DOMBackend._$jq = $jq;
 
 DOMBackend.parseHTML = function (html) {
   // Return an array of nodes.
-  //
-  // jQuery does fancy stuff like creating an appropriate
-  // container element and setting innerHTML on it, as well
-  // as working around various IE quirks.
-  return $jq.parseHTML(html) || [];
+  let div = document.createElement("div");
+  div.innerHTML = html;
+  return Array.from(div.childNodes);
 };
 
 DOMBackend.Events = {
