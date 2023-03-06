@@ -2,17 +2,6 @@ const isObject = function (value) {
   var type = typeof value;
   return value != null && (type == 'object' || type == 'function');
 }
-const has = (obj, path) => {
-  const thisPath = Array.isArray(path) ? path : [path];
-  const length = thisPath.length;
-  for (let i = 0; i < length; i++) {
-    const key = thisPath[i];
-    const _has = obj != null && Object.hasOwnProperty.call(obj, key);
-    if (!_has) return false;
-    obj = obj[key];
-  }
-  return !!length;
-};
 
 const warn = function () {
   if (ObserveSequence._suppressWarnings) {
@@ -360,7 +349,7 @@ const diffArray = function (lastSeqArray, seqArray, callbacks) {
 
     var id = idParse(idString);
     
-    if (has(posOld, idString)) {
+    if (posOld.hasOwnProperty(idString)) {
       // specifically for primitive types, compare equality before
       // firing the 'changedAt' callback. otherwise, always fire it
       // because doing a deep EJSON comparison is not guaranteed to
