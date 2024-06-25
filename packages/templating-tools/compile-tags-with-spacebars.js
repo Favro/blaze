@@ -13,6 +13,7 @@ export function compileTagsWithSpacebars(tags, hmrAvailable) {
   return handler.getResults();
 }
 
+const whitespaceDefault = process.env.METEOR_WHITESPACE_DEFAULT ?? '';
 
 class SpacebarsTagCompiler {
   constructor() {
@@ -58,7 +59,7 @@ class SpacebarsTagCompiler {
           this.throwCompileError(`Template can't be named "${name}"`);
         }
 
-        const whitespace = this.tag.attribs.whitespace || '';
+        const whitespace = this.tag.attribs.whitespace || whitespaceDefault;
 
         const renderFuncCode = SpacebarsCompiler.compile(this.tag.contents, {
           whitespace,
@@ -69,7 +70,7 @@ class SpacebarsTagCompiler {
         this.results.js += generateTemplateJS(
           name, renderFuncCode, hmrAvailable);
       } else if (this.tag.tagName === "body") {
-        const { whitespace = '', ...attribs } = this.tag.attribs;
+        const { whitespace = whitespaceDefault, ...attribs } = this.tag.attribs;
         this.addBodyAttrs(attribs);
 
         const renderFuncCode = SpacebarsCompiler.compile(this.tag.contents, {
